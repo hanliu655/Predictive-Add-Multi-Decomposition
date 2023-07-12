@@ -2,17 +2,22 @@ import pandas as pd
 import numpy as np
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
+
 df = pd.read_csv('DailyDelhiClimateTrain.csv')
-# Generate a sample time series with a datetime index
+
+# Generate a sample time series with a date index
 dates = pd.date_range(start='2013-01-01', end='2017-01-01', freq='D')
 values = np.random.rand(len(dates))
 df = pd.DataFrame({'humidity': values}, index=dates)
+
 # Perform additive decomposition
 decomposition_add = sm.tsa.seasonal_decompose(df['humidity'], model='additive')
+
 # Access the trend, seasonal, and residual components
 trend_add = decomposition_add.trend
 seasonal_add = decomposition_add.seasonal
 residual_add = decomposition_add.resid
+
 # plot the additive decomposition
 plt.figure(figsize=(10, 8))
 
@@ -42,10 +47,12 @@ plt.show()
 
 # Perform multiplicative decomposition
 decomposition_mult = sm.tsa.seasonal_decompose(df['humidity'], model='multiplicative')
+
 # Access the trend, seasonal, and residual components
 trend_mult = decomposition_mult.trend
 seasonal_mult = decomposition_mult.seasonal
 residual_mult = decomposition_mult.resid
+
 # Plot the multiplicative decomposition components
 plt.figure(figsize=(10, 8))
 
