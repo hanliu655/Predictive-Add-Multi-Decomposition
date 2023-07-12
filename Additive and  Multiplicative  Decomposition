@@ -1,0 +1,73 @@
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+df = pd.read_csv('DailyDelhiClimateTrain.csv')
+# Generate a sample time series with a datetime index
+dates = pd.date_range(start='2013-01-01', end='2017-01-01', freq='D')
+values = np.random.rand(len(dates))
+df = pd.DataFrame({'humidity': values}, index=dates)
+# Perform additive decomposition
+decomposition_add = sm.tsa.seasonal_decompose(df['humidity'], model='additive')
+# Access the trend, seasonal, and residual components
+trend_add = decomposition_add.trend
+seasonal_add = decomposition_add.seasonal
+residual_add = decomposition_add.resid
+# plot the additive decomposition
+plt.figure(figsize=(10, 8))
+
+# Original time series
+plt.subplot(411)
+plt.plot(df['humidity'],linewidth=1)
+plt.title('Average Humidity')
+
+# Trend component
+plt.subplot(412)
+plt.plot(trend_add, linewidth=1)
+plt.title('Trend Component')
+
+# Seasonal component
+plt.subplot(413)
+plt.plot(seasonal_add,linewidth=1)
+plt.ylim(-0.025, 0.025)  
+plt.title('Seasonal Component')
+
+# Residual component
+plt.subplot(414)
+plt.plot(residual_add, linewidth=1)
+plt.title('Random Component')
+
+plt.tight_layout()
+plt.show()
+
+# Perform multiplicative decomposition
+decomposition_mult = sm.tsa.seasonal_decompose(df['humidity'], model='multiplicative')
+# Access the trend, seasonal, and residual components
+trend_mult = decomposition_mult.trend
+seasonal_mult = decomposition_mult.seasonal
+residual_mult = decomposition_mult.resid
+# Plot the multiplicative decomposition components
+plt.figure(figsize=(10, 8))
+
+# Original time series
+plt.subplot(411)
+plt.plot(df['humidity'],linewidth=1)
+plt.title('Average Humidity')
+
+# Trend component
+plt.subplot(412)
+plt.plot(trend_mult,linewidth=1)
+plt.title('Trend Component')
+
+# Seasonal component
+plt.subplot(413)
+plt.plot(seasonal_mult,linewidth=1)
+plt.title('Seasonal Component')
+
+# Residual component
+plt.subplot(414)
+plt.plot(residual_mult,linewidth=1)
+plt.title('Random Component')
+
+plt.tight_layout()
+plt.show()
