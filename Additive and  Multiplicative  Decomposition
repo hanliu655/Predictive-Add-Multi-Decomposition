@@ -78,3 +78,47 @@ plt.title('Random Component')
 
 plt.tight_layout()
 plt.show()
+
+# Perform RMSE and MSE
+# Perform additive decomposition
+decomposition_add = sm.tsa.seasonal_decompose(df['humidity'], model='additive')
+
+# Access the trend, seasonal, and residual components
+trend_add = decomposition_add.trend
+seasonal_add = decomposition_add.seasonal
+residual_add = decomposition_add.resid
+
+# Reconstruct the time series from the additive decomposition
+reconstructed_add = trend_add + seasonal_add + residual_add
+
+# Calculate Mean Squared Error (MSE)
+mse_add = np.mean((df['humidity'] - reconstructed_add) ** 2)
+
+# Calculate Root Mean Squared Error (RMSE)
+rmse_add = np.sqrt(mse_add)
+
+# Perform multiplicative decomposition
+decomposition_mult = sm.tsa.seasonal_decompose(df['humidity'], model='multiplicative')
+
+# Access the trend, seasonal, and residual components
+trend_mult = decomposition_mult.trend
+seasonal_mult = decomposition_mult.seasonal
+residual_mult = decomposition_mult.resid
+
+# Reconstruct the time series from the multiplicative decomposition
+reconstructed_mult = trend_mult * seasonal_mult * residual_mult
+
+# Calculate Mean Squared Error (MSE)
+mse_mult = np.mean((df['humidity'] - reconstructed_mult) ** 2)
+
+# Calculate Root Mean Squared Error (RMSE)
+rmse_mult = np.sqrt(mse_mult)
+
+# Print the MSE and RMSE for both decomposition methods
+print("Additive Decomposition:")
+print("MSE:", mse_add)
+print("RMSE:", rmse_add)
+
+print("\nMultiplicative Decomposition:")
+print("MSE:", mse_mult)
+print("RMSE:", rmse_mult)
